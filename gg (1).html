@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for You!</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0f172a;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container { text-align: center; transition: all 0.5s; }
+
+        /* The Button */
+        #main-btn {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #f43f5e, #fbbf24);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.5);
+            font-weight: bold;
+        }
+
+        /* The Loading Bar Prank */
+        #prank-screen {
+            display: none;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .loader-bg {
+            width: 100%;
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .loader-fill {
+            height: 100%;
+            width: 0%;
+            background: #22c55e;
+            transition: width 0.1s;
+        }
+
+        /* The Final Reveal */
+        #final-screen {
+            display: none;
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .warning { color: #f43f5e; font-weight: bold; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <div id="stage1" class="container">
+        <h1>🎁 You have (1) Unclaimed Gift!</h1>
+        <p>Click below to verify you are a human and claim it.</p>
+        <button id="main-btn" onclick="startPrank()">CLAIM GIFT</button>
+    </div>
+
+    <div id="prank-screen" class="container">
+        <h2 id="status-msg">Accessing Local Files...</h2>
+        <div class="loader-bg">
+            <div id="fill" class="loader-fill"></div>
+        </div>
+        <p class="warning" id="warning-text"></p>
+    </div>
+
+    <div id="final-screen" class="container">
+        <h1 style="font-size: 5rem;">🤡</h1>
+        <h2>Happy April Fools!</h2>
+        <p>"I searched your whole computer and all I found was a folder titled 'Selfies with Potatoes'."</p>
+        <p style="font-style: italic; color: #94a3b8;">(Don't worry, I didn't actually touch your files... this time.)</p>
+        <button onclick="location.reload()" style="background:none; border: 1px solid #fff; color:white; padding: 5px 10px; cursor:pointer;">Try again?</button>
+    </div>
+
+    <script>
+        function startPrank() {
+            document.getElementById('stage1').style.display = 'none';
+            document.getElementById('prank-screen').style.display = 'block';
+            
+            let fill = document.getElementById('fill');
+            let msg = document.getElementById('status-msg');
+            let warn = document.getElementById('warning-text');
+            let width = 0;
+
+            let interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    showFinal();
+                } else {
+                    width++;
+                    fill.style.width = width + '%';
+                    
+                    // Add "Scary" messages at specific percentages
+                    if(width == 20) msg.innerText = "Deleting System32...";
+                    if(width == 40) msg.innerText = "Uploading Search History to Parents...";
+                    if(width == 60) {
+                        msg.innerText = "ERROR: Too much Cringe detected!";
+                        warn.innerText = "⚠️ HARD DRIVE OVERHEATING";
+                    }
+                    if(width == 80) msg.innerText = "Finalizing Cyber-Prank...";
+                }
+            }, 80); // Speed of the fake loading
+        }
+
+        function showFinal() {
+            document.getElementById('prank-screen').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'block';
+            
+            // The "Spice": A sudden vibrating effect
+            document.body.style.animation = "shake 0.1s infinite";
+            setTimeout(() => { document.body.style.animation = ""; }, 500);
+        }
+    </script>
+
+    <style>
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            40% { transform: translate(3px, 2px) rotate(-1deg); }
+            60% { transform: translate(-1px, -1px) rotate(1deg); }
+            80% { transform: translate(-3px, 1px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</body>
+</html>
